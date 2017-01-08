@@ -1,2 +1,9 @@
 # This file contains the output files that need %exclude. Full path
 # names, one per line.
+/usr/bin/s2tc_compress
+/usr/bin/s2tc_decompress
+/usr/bin/s2tc_from_s3tc
+/usr/include/txc_dxtn.h
+/usr/lib32/pkgconfig/32txc_dxtn.pc
+/usr/lib32/pkgconfig/txc_dxtn.pc
+/usr/lib64/pkgconfig/txc_dxtn.pc

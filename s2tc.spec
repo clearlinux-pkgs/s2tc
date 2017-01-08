@@ -4,7 +4,7 @@
 #
 Name     : s2tc
 Version  : f6ec862d7594e29ae80a6e49f66ad4c76cf09abc
-Release  : 1
+Release  : 2
 URL      : https://github.com/divVerent/s2tc/archive/f6ec862d7594e29ae80a6e49f66ad4c76cf09abc.tar.gz
 Source0  : https://github.com/divVerent/s2tc/archive/f6ec862d7594e29ae80a6e49f66ad4c76cf09abc.tar.gz
 Summary  : Library for S2TC texture compression
@@ -71,7 +71,7 @@ popd
 
 %build
 export LANG=C
-export SOURCE_DATE_EPOCH=1483888974
+export SOURCE_DATE_EPOCH=1483889210
 %autogen --disable-static
 make V=1  %{?_smp_mflags}
 
@@ -108,21 +108,21 @@ popd
 
 %files bin
 %defattr(-,root,root,-)
-/usr/bin/s2tc_compress
-/usr/bin/s2tc_decompress
-/usr/bin/s2tc_from_s3tc
+%exclude /usr/bin/s2tc_compress
+%exclude /usr/bin/s2tc_decompress
+%exclude /usr/bin/s2tc_from_s3tc
 
 %files dev
 %defattr(-,root,root,-)
-/usr/include/*.h
+%exclude /usr/include/txc_dxtn.h
+%exclude /usr/lib64/pkgconfig/txc_dxtn.pc
 /usr/lib64/libtxc_dxtn.so
-/usr/lib64/pkgconfig/txc_dxtn.pc
 
 %files dev32
 %defattr(-,root,root,-)
+%exclude /usr/lib32/pkgconfig/32txc_dxtn.pc
+%exclude /usr/lib32/pkgconfig/txc_dxtn.pc
 /usr/lib32/libtxc_dxtn.so
-/usr/lib32/pkgconfig/32txc_dxtn.pc
-/usr/lib32/pkgconfig/txc_dxtn.pc
 
 %files doc
 %defattr(-,root,root,-)
