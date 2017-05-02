@@ -4,7 +4,7 @@
 #
 Name     : s2tc
 Version  : f6ec862d7594e29ae80a6e49f66ad4c76cf09abc
-Release  : 2
+Release  : 3
 URL      : https://github.com/divVerent/s2tc/archive/f6ec862d7594e29ae80a6e49f66ad4c76cf09abc.tar.gz
 Source0  : https://github.com/divVerent/s2tc/archive/f6ec862d7594e29ae80a6e49f66ad4c76cf09abc.tar.gz
 Summary  : Library for S2TC texture compression
