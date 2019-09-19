@@ -4,13 +4,12 @@
 #
 Name     : s2tc
 Version  : f6ec862d7594e29ae80a6e49f66ad4c76cf09abc
-Release  : 6
+Release  : 7
 URL      : https://github.com/divVerent/s2tc/archive/f6ec862d7594e29ae80a6e49f66ad4c76cf09abc.tar.gz
 Source0  : https://github.com/divVerent/s2tc/archive/f6ec862d7594e29ae80a6e49f66ad4c76cf09abc.tar.gz
 Summary  : Library for S2TC texture compression
 Group    : Development/Tools
 License  : MIT
-Requires: s2tc-bin = %{version}-%{release}
 Requires: s2tc-lib = %{version}-%{release}
 Requires: s2tc-license = %{version}-%{release}
 Requires: s2tc-man = %{version}-%{release}
@@ -28,38 +27,6 @@ Color Distance Function
 -----------------------
 The following color distance functions can be selected by setting the
 environment variable `S2TC_COLORDIST_MODE`:
-
-%package bin
-Summary: bin components for the s2tc package.
-Group: Binaries
-Requires: s2tc-license = %{version}-%{release}
-Requires: s2tc-man = %{version}-%{release}
-
-%description bin
-bin components for the s2tc package.
-
-
-%package dev
-Summary: dev components for the s2tc package.
-Group: Development
-Requires: s2tc-lib = %{version}-%{release}
-Requires: s2tc-bin = %{version}-%{release}
-Provides: s2tc-devel = %{version}-%{release}
-
-%description dev
-dev components for the s2tc package.
-
-
-%package dev32
-Summary: dev32 components for the s2tc package.
-Group: Default
-Requires: s2tc-lib32 = %{version}-%{release}
-Requires: s2tc-bin = %{version}-%{release}
-Requires: s2tc-dev = %{version}-%{release}
-
-%description dev32
-dev32 components for the s2tc package.
-
 
 %package lib
 Summary: lib components for the s2tc package.
@@ -105,22 +72,27 @@ popd
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1546521363
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1568875779
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$CFLAGS -fno-lto "
+export FFLAGS="$CFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
 %autogen --disable-static
 make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %autogen --disable-static   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -129,7 +101,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1546521363
+export SOURCE_DATE_EPOCH=1568875779
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/s2tc
 cp COPYING %{buildroot}/usr/share/package-licenses/s2tc/COPYING
@@ -143,25 +115,17 @@ popd
 fi
 popd
 %make_install
+## Remove excluded files
+rm -f %{buildroot}/usr/bin/s2tc_compress
+rm -f %{buildroot}/usr/bin/s2tc_decompress
+rm -f %{buildroot}/usr/bin/s2tc_from_s3tc
+rm -f %{buildroot}/usr/include/txc_dxtn.h
+rm -f %{buildroot}/usr/lib32/pkgconfig/32txc_dxtn.pc
+rm -f %{buildroot}/usr/lib32/pkgconfig/txc_dxtn.pc
+rm -f %{buildroot}/usr/lib64/pkgconfig/txc_dxtn.pc
 
 %files
 %defattr(-,root,root,-)
-
-%files bin
-%defattr(-,root,root,-)
-%exclude /usr/bin/s2tc_compress
-%exclude /usr/bin/s2tc_decompress
-%exclude /usr/bin/s2tc_from_s3tc
-
-%files dev
-%defattr(-,root,root,-)
-%exclude /usr/include/txc_dxtn.h
-%exclude /usr/lib64/pkgconfig/txc_dxtn.pc
-
-%files dev32
-%defattr(-,root,root,-)
-%exclude /usr/lib32/pkgconfig/32txc_dxtn.pc
-%exclude /usr/lib32/pkgconfig/txc_dxtn.pc
 
 %files lib
 %defattr(-,root,root,-)
