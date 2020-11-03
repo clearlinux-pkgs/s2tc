@@ -4,7 +4,7 @@
 #
 Name     : s2tc
 Version  : f6ec862d7594e29ae80a6e49f66ad4c76cf09abc
-Release  : 7
+Release  : 8
 URL      : https://github.com/divVerent/s2tc/archive/f6ec862d7594e29ae80a6e49f66ad4c76cf09abc.tar.gz
 Source0  : https://github.com/divVerent/s2tc/archive/f6ec862d7594e29ae80a6e49f66ad4c76cf09abc.tar.gz
 Summary  : Library for S2TC texture compression
@@ -64,6 +64,7 @@ man components for the s2tc package.
 
 %prep
 %setup -q -n s2tc-f6ec862d7594e29ae80a6e49f66ad4c76cf09abc
+cd %{_builddir}/s2tc-f6ec862d7594e29ae80a6e49f66ad4c76cf09abc
 pushd ..
 cp -a s2tc-f6ec862d7594e29ae80a6e49f66ad4c76cf09abc build32
 popd
@@ -73,11 +74,11 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568875779
+export SOURCE_DATE_EPOCH=1604442175
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
-export FCFLAGS="$CFLAGS -fno-lto "
-export FFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
 %autogen --disable-static
 make  %{?_smp_mflags}
@@ -96,15 +97,15 @@ export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+make %{?_smp_mflags} check
 cd ../build32;
-make VERBOSE=1 V=1 %{?_smp_mflags} check || :
+make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1568875779
+export SOURCE_DATE_EPOCH=1604442175
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/s2tc
-cp COPYING %{buildroot}/usr/share/package-licenses/s2tc/COPYING
+cp %{_builddir}/s2tc-f6ec862d7594e29ae80a6e49f66ad4c76cf09abc/COPYING %{buildroot}/usr/share/package-licenses/s2tc/4515917b0832259419b4410b1c6b88a48c25e982
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -137,7 +138,7 @@ rm -f %{buildroot}/usr/lib64/pkgconfig/txc_dxtn.pc
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/s2tc/COPYING
+/usr/share/package-licenses/s2tc/4515917b0832259419b4410b1c6b88a48c25e982
 
 %files man
 %defattr(0644,root,root,0755)
